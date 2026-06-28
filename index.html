@@ -216,6 +216,249 @@
       .hero, .next { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       section { break-inside: avoid; }
     }
+  
+    /* =====================================================================
+       ✦  CAMADA DE LUXO  ✦  (acréscimo - não altera o conteúdo original)
+       ===================================================================== */
+    :root{
+      --gold:#FFD24A;
+      --gold-2:#FFB200;
+      --gold-3:#FFE9A6;
+      --gold-deep:#C8860A;
+      --gold-grad:linear-gradient(120deg,#FFE9A6 0%,#FFD24A 28%,#FFB200 55%,#FFD24A 78%,#FFE9A6 100%);
+      --glass:rgba(255,255,255,.06);
+      --ease:cubic-bezier(.22,.7,.2,1);
+    }
+
+    /* ---- Fundo geral com leve aurora ---- */
+    body{ position:relative; }
+    body::before{
+      content:""; position:fixed; inset:-20vmax; z-index:-1; pointer-events:none;
+      background:
+        radial-gradient(40vmax 40vmax at 12% 8%, rgba(31,157,214,.10), transparent 60%),
+        radial-gradient(38vmax 38vmax at 92% 22%, rgba(255,210,74,.12), transparent 60%),
+        radial-gradient(45vmax 45vmax at 70% 95%, rgba(31,157,214,.08), transparent 60%);
+      filter:saturate(1.1);
+      animation:auroraDrift 24s ease-in-out infinite alternate;
+    }
+    @keyframes auroraDrift{
+      0%{ transform:translate3d(0,0,0) rotate(0deg); }
+      100%{ transform:translate3d(-3%,2%,0) rotate(6deg); }
+    }
+
+    /* ---- HERO: brilho ambiente + camada que segue o mouse ---- */
+    .hero{ isolation:isolate; }
+    .hero::after{
+      content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(60% 80% at var(--mx,75%) var(--my,25%), rgba(255,210,74,.18), transparent 60%),
+        conic-gradient(from 180deg at 120% -10%, rgba(31,157,214,.30), transparent 30%);
+      mix-blend-mode:screen; opacity:.9;
+      transition:background-position .2s linear;
+    }
+    .hero > .wrap{ position:relative; z-index:2; }
+    /* faixa de luz que cruza o hero */
+    .hero::before{
+      content:""; position:absolute; top:0; bottom:0; left:-30%; width:30%; z-index:1; pointer-events:none;
+      background:linear-gradient(100deg, transparent, rgba(255,255,255,.10) 45%, rgba(255,233,166,.18) 50%, transparent 60%);
+      filter:blur(2px);
+      animation:sheenSweep 7s var(--ease) infinite;
+    }
+    @keyframes sheenSweep{
+      0%{ left:-35%; } 55%{ left:130%; } 100%{ left:130%; }
+    }
+
+    /* ---- Sparkles flutuantes (gerados via JS) ---- */
+    .lux-spark{
+      position:absolute; z-index:1; pointer-events:none; border-radius:50%;
+      background:radial-gradient(circle, #fff 0%, var(--gold) 40%, transparent 70%);
+      box-shadow:0 0 8px rgba(255,210,74,.8);
+      opacity:0; animation:sparkFloat linear infinite;
+    }
+    @keyframes sparkFloat{
+      0%{ opacity:0; transform:translateY(10px) scale(.4); }
+      15%{ opacity:.9; }
+      85%{ opacity:.7; }
+      100%{ opacity:0; transform:translateY(-90px) scale(1.1); }
+    }
+
+    /* ---- Título do hero: dourado com brilho deslizante ---- */
+    .hero h1{
+      background:var(--gold-grad);
+      background-size:220% auto;
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent; color:transparent;
+      animation:goldFlow 6s linear infinite;
+      filter:drop-shadow(0 6px 24px rgba(255,178,0,.18));
+    }
+    @keyframes goldFlow{ to{ background-position:220% center; } }
+    .hero .eyebrow{ text-shadow:0 0 18px rgba(255,210,74,.45); }
+
+    /* ---- Pill: ouro polido + leve flutuação ---- */
+    .pill{
+      background:var(--gold-grad); background-size:200% auto;
+      color:#3a2a00; box-shadow:0 8px 24px rgba(255,178,0,.35), inset 0 1px 0 rgba(255,255,255,.5);
+      animation:goldFlow 5s linear infinite, floaty 5s ease-in-out infinite;
+      position:relative; overflow:hidden;
+    }
+    @keyframes floaty{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-3px);} }
+
+    /* ---- Botões: brilho atravessando no hover + pulso no primário ---- */
+    .button{ position:relative; overflow:hidden; }
+    .button::after{
+      content:""; position:absolute; top:0; left:-120%; width:60%; height:100%;
+      background:linear-gradient(110deg, transparent, rgba(255,255,255,.55), transparent);
+      transform:skewX(-18deg); transition:left .6s var(--ease);
+    }
+    .button:hover::after{ left:130%; }
+    .button.primary{
+      background:var(--gold-grad); background-size:200% auto; color:#3a2a00;
+      box-shadow:0 14px 34px rgba(255,178,0,.40), inset 0 1px 0 rgba(255,255,255,.55);
+      animation:goldFlow 5s linear infinite, glowPulse 3.2s ease-in-out infinite;
+    }
+    .button:hover{ transform:translateY(-3px) scale(1.015); }
+    @keyframes glowPulse{
+      0%,100%{ box-shadow:0 14px 34px rgba(255,178,0,.32), inset 0 1px 0 rgba(255,255,255,.5);}
+      50%{ box-shadow:0 18px 46px rgba(255,178,0,.6), inset 0 1px 0 rgba(255,255,255,.6);}
+    }
+
+    /* ---- Timeline: vidro + dots com pulso ---- */
+    .timeline-card{
+      background:linear-gradient(160deg, rgba(8,46,61,.78), rgba(4,30,42,.72));
+      backdrop-filter:blur(12px) saturate(1.2);
+      border:1px solid rgba(255,210,74,.25);
+      box-shadow:0 30px 80px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .timeline::before{ background:linear-gradient(180deg, var(--gold), rgba(255,210,74,.15)); }
+    .dot{ box-shadow:0 0 0 0 rgba(255,210,74,.5); animation:dotPulse 2.6s ease-in-out infinite; }
+    .time-item:nth-child(2) .dot{ animation-delay:.6s; }
+    .time-item:nth-child(3) .dot{ animation-delay:1.2s; }
+    @keyframes dotPulse{
+      0%{ box-shadow:0 0 0 0 rgba(255,210,74,.45);}
+      70%{ box-shadow:0 0 0 14px rgba(255,210,74,0);}
+      100%{ box-shadow:0 0 0 0 rgba(255,210,74,0);}
+    }
+
+    /* ---- Cards: borda que brilha + brilho de vidro no hover + tilt ---- */
+    .card{
+      position:relative; transform-style:preserve-3d;
+      transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+    }
+    .card::before{
+      content:""; position:absolute; inset:0; border-radius:inherit; padding:1px;
+      background:linear-gradient(135deg, rgba(255,210,74,.0), rgba(255,210,74,.55), rgba(31,157,214,.45), rgba(255,210,74,0));
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor; mask-composite:exclude;
+      opacity:0; transition:opacity .35s var(--ease); pointer-events:none;
+    }
+    .card::after{
+      content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+      background:radial-gradient(40% 60% at var(--cx,50%) var(--cy,0%), rgba(255,255,255,.18), transparent 60%);
+      opacity:0; transition:opacity .35s var(--ease);
+    }
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 34px 70px rgba(6,43,58,.22), 0 0 30px rgba(255,210,74,.15);
+    }
+    .card:hover::before{ opacity:1; }
+    .card:hover::after{ opacity:1; }
+    .card.dark:hover{ box-shadow:0 34px 80px rgba(0,0,0,.5), 0 0 36px rgba(255,210,74,.25); }
+
+    /* ---- Destaque de data: número dourado ---- */
+    .highlight-date{
+      background:linear-gradient(160deg, var(--navy-2), #042736);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 24px 60px rgba(6,43,58,.25);
+    }
+    .highlight-date strong{
+      background:var(--gold-grad); background-size:220% auto;
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+      animation:goldFlow 6s linear infinite;
+    }
+    .highlight-date .rule{ background:var(--gold-grad); background-size:200% auto; animation:goldFlow 4s linear infinite; box-shadow:0 0 16px rgba(255,210,74,.6); }
+
+    /* ---- Etapas (process): número em ouro ---- */
+    .step::before{
+      background:radial-gradient(circle at 30% 30%, #0a4255, var(--navy));
+      box-shadow:0 10px 24px rgba(6,43,58,.3), inset 0 0 0 1px rgba(255,210,74,.35);
+      color:var(--gold);
+    }
+
+    /* ---- Card de preço: ouro vivo, pulsando ---- */
+    .price-card{ position:relative; }
+    .price-top{
+      background:var(--gold-grad); background-size:220% auto; color:#3a2a00;
+      animation:goldFlow 5s linear infinite;
+      text-shadow:0 1px 0 rgba(255,255,255,.4);
+      box-shadow:inset 0 -1px 0 rgba(0,0,0,.08);
+    }
+    .price-card::after{
+      content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+      box-shadow:0 0 0 1px rgba(255,210,74,.0);
+      animation:priceGlow 3.4s ease-in-out infinite;
+    }
+    @keyframes priceGlow{
+      0%,100%{ box-shadow:0 18px 50px rgba(255,178,0,.16);}
+      50%{ box-shadow:0 26px 70px rgba(255,178,0,.34);}
+    }
+    .features li::before{ box-shadow:0 0 10px rgba(31,157,214,.7); }
+    .bonus{ background:var(--gold-grad); background-size:220% auto; animation:goldFlow 6s linear infinite; box-shadow:0 18px 44px rgba(255,178,0,.3); }
+
+    /* ---- Entregáveis: barra com brilho ---- */
+    .deliverable .bar{ position:relative; overflow:hidden; }
+    .deliverable .bar::after{
+      content:""; position:absolute; left:0; right:0; top:-40%; height:40%;
+      background:linear-gradient(180deg, transparent, rgba(255,255,255,.7), transparent);
+      animation:barShine 2.8s ease-in-out infinite;
+    }
+    @keyframes barShine{ 0%{ top:-50%;} 60%,100%{ top:120%;} }
+
+    /* ---- Próximos passos: números dourados + contato em vidro ---- */
+    .steps-list span{
+      background:var(--gold-grad); background-size:200% auto; color:#3a2a00;
+      animation:goldFlow 5s linear infinite;
+      box-shadow:0 8px 22px rgba(255,178,0,.4), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    .contact-card{
+      background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      backdrop-filter:blur(10px) saturate(1.1);
+      border:1px solid rgba(255,210,74,.22);
+      box-shadow:0 24px 60px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .contact-row{ transition:transform .25s var(--ease), color .25s var(--ease); border-radius:12px; }
+    .contact-row:hover{ transform:translateX(6px); color:#fff; }
+
+    /* ---- Seção "next": brilho dourado de fundo ---- */
+    .next{ position:relative; overflow:hidden; }
+    .next::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(50% 60% at 85% 15%, rgba(255,210,74,.16), transparent 60%);
+    }
+
+    /* ---- Sticky CTA no mobile com pulso dourado ---- */
+    .sticky-cta a{ background:var(--gold-grad); background-size:200% auto; color:#3a2a00; animation:goldFlow 5s linear infinite, glowPulse 3s ease-in-out infinite; }
+
+    /* ---- Scrollbar dourada ---- */
+    ::-webkit-scrollbar{ width:12px; }
+    ::-webkit-scrollbar-track{ background:#06202b; }
+    ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg, var(--gold), var(--gold-deep)); border-radius:99px; border:3px solid #06202b; }
+
+    /* ---- Scroll reveal (ativado só com JS via .luxo no <html>) ---- */
+    html.luxo .reveal{ opacity:0; transform:translateY(34px); transition:opacity .8s var(--ease), transform .8s var(--ease); will-change:opacity, transform; }
+    html.luxo .reveal.in{ opacity:1; transform:none; }
+    html.luxo .reveal.d1{ transition-delay:.08s;} html.luxo .reveal.d2{ transition-delay:.16s;}
+    html.luxo .reveal.d3{ transition-delay:.24s;} html.luxo .reveal.d4{ transition-delay:.32s;}
+
+    /* ---- Respeita quem prefere menos movimento ---- */
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{ animation:none !important; transition:none !important; }
+      html.luxo .reveal{ opacity:1 !important; transform:none !important; }
+      .hero::before{ display:none; }
+    }
+    @media print{
+      .lux-spark, .hero::before, .hero::after, body::before{ display:none !important; }
+      html.luxo .reveal{ opacity:1 !important; transform:none !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -372,5 +615,110 @@
     </footer>
   </div>
   <div class="sticky-cta"><a href="https://wa.me/5511989417886?text=Ol%C3%A1%2C%20Kaed.%20Tenho%20interesse%20em%20aprovar%20a%20proposta%20de%20adequa%C3%A7%C3%A3o%20fiscal%20para%20a%20Reforma%20Tribut%C3%A1ria." target="_blank" rel="noopener">Aprovar pelo WhatsApp</a></div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
+  root.classList.add('luxo');
+
+  // ---- 1. Scroll reveal ----
+  var revealSel = '.section-head, .card, .highlight-date, .time-item, .steps-list li, .price-card, .bonus, .contact-card, .deliverable';
+  var els = Array.prototype.slice.call(document.querySelectorAll(revealSel));
+  els.forEach(function(el){ el.classList.add('reveal'); });
+  // escalona itens irmãos dentro de grids
+  document.querySelectorAll('.grid-3, .deliverables, .process, .features, .steps-list, .timeline').forEach(function(g){
+    var kids = g.children, n=0;
+    for (var i=0;i<kids.length;i++){
+      var t = kids[i].matches && kids[i].matches(revealSel) ? kids[i] : kids[i].querySelector && kids[i].querySelector(revealSel);
+      if (t){ n++; if(n<=4) t.classList.add('d'+n); }
+    }
+  });
+
+  if ('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // ---- 2. Glow que segue o mouse no hero ----
+  var hero = document.querySelector('.hero');
+  if (hero && !reduce){
+    hero.addEventListener('pointermove', function(ev){
+      var r = hero.getBoundingClientRect();
+      hero.style.setProperty('--mx', ((ev.clientX-r.left)/r.width*100)+'%');
+      hero.style.setProperty('--my', ((ev.clientY-r.top)/r.height*100)+'%');
+    });
+  }
+
+  // ---- 3. Sparkles flutuantes no hero ----
+  if (hero && !reduce){
+    var N = 18;
+    for (var i=0;i<N;i++){
+      var s = document.createElement('span');
+      s.className = 'lux-spark';
+      var sz = 2 + Math.random()*4;
+      s.style.width = sz+'px'; s.style.height = sz+'px';
+      s.style.left = Math.random()*100 + '%';
+      s.style.top  = (40 + Math.random()*60) + '%';
+      s.style.animationDuration = (5 + Math.random()*6) + 's';
+      s.style.animationDelay = (-Math.random()*8) + 's';
+      hero.appendChild(s);
+    }
+  }
+
+  // ---- 4. Tilt 3D + brilho de vidro nos cards ----
+  if (!reduce && window.matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.card').forEach(function(card){
+      card.addEventListener('pointermove', function(ev){
+        var r = card.getBoundingClientRect();
+        var px = (ev.clientX-r.left)/r.width, py = (ev.clientY-r.top)/r.height;
+        card.style.setProperty('--cx', (px*100)+'%');
+        card.style.setProperty('--cy', (py*100)+'%');
+        card.style.transform = 'translateY(-8px) perspective(900px) rotateX('+((0.5-py)*6).toFixed(2)+'deg) rotateY('+((px-0.5)*6).toFixed(2)+'deg)';
+      });
+      card.addEventListener('pointerleave', function(){ card.style.transform=''; });
+    });
+  }
+
+  // ---- 5. Contagem animada do preço ----
+  var priceEl = document.querySelector('.price-top');
+  if (priceEl && !reduce){
+    var node = priceEl.firstChild; // nó de texto "R$ 950,00 "
+    if (node && node.nodeType === 3){
+      var m = node.textContent.match(/([\d.]+),(\d{2})/);
+      if (m){
+        var target = parseInt(m[1].replace(/\D/g,''),10);
+        var cents = m[2];
+        var done = false;
+        var run = function(){
+          if (done) return; done = true;
+          var start = null, dur = 1300;
+          function step(ts){
+            if(!start) start=ts;
+            var p = Math.min((ts-start)/dur,1);
+            var eased = 1-Math.pow(1-p,3);
+            var val = Math.round(target*eased);
+            node.textContent = 'R$ ' + val.toLocaleString('pt-BR') + (p>=1 ? (','+cents+' ') : ' ');
+            if (p<1) requestAnimationFrame(step);
+          }
+          node.textContent = 'R$ 0 ';
+          requestAnimationFrame(step);
+        };
+        if ('IntersectionObserver' in window){
+          var io2 = new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ run(); io2.disconnect(); } }); }, {threshold:.5});
+          io2.observe(priceEl);
+        } else { run(); }
+      }
+    }
+  }
+})();
+</script>
+
 </body>
 </html>
